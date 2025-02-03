@@ -8,13 +8,14 @@ const MapModel: React.FC = () => {
   const modelRef = useRef<THREE.Object3D | null>(null);
   const textureLoader = new THREE.TextureLoader();
 
-  // 🟢 Preloaded texture to prevent redundant loads
   const textureCache: Record<string, THREE.Texture> = {};
 
-  // 🟢 Texture Path - Used as material
   const texturePaths: Record<string, string> = {
     citybits: "/assets/textures/citybits_texture.png"
   };
+
+  // const axesHelper = new THREE.AxesHelper(5000);
+  // scene.add(axesHelper);
 
   useEffect(() => {
     const loader = new FBXLoader();
@@ -55,7 +56,6 @@ const MapModel: React.FC = () => {
   return null;
 };
 
-// 🟢 Function to create a new material with a texture
 const applyMaterial = (
   material: THREE.Material,
   textureLoader: THREE.TextureLoader,
@@ -64,7 +64,7 @@ const applyMaterial = (
 ) => {
   // Always apply citybits texture
   const citybitsTexturePath = texturePaths.citybits;
-  
+
   // Load texture only once to optimize performance
   if (!textureCache.citybits) {
     textureCache.citybits = textureLoader.load(citybitsTexturePath);
