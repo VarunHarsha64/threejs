@@ -14,8 +14,8 @@ const MapModel: React.FC = () => {
     citybits: "/assets/textures/citybits_texture.png"
   };
 
-  // const axesHelper = new THREE.AxesHelper(5000);
-  // scene.add(axesHelper);
+  const axesHelper = new THREE.AxesHelper(5000);
+  scene.add(axesHelper);
 
   useEffect(() => {
     const loader = new FBXLoader();

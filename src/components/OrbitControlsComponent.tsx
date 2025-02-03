@@ -37,6 +37,8 @@ const OrbitControlsComponent: FC<OrbitControlsProps> = ({
     const panSensitivity = 0.05;
 
     useFrame(() => {
+        // console.log(camera.position.x - controlsRef.current.target.x, camera.position.z - controlsRef.current.target.z);
+
         if (!controlsRef.current) return;
 
         if (isWheelActive.current) {
@@ -76,24 +78,36 @@ const OrbitControlsComponent: FC<OrbitControlsProps> = ({
         };
 
         const handleMouseMove = (event: MouseEvent) => {
-            if (isDragging.current && lastMousePosition.current) {
-                camera.position.y = initialYPosition.current;
-                controlsRef.current.target.y = initialTargetYPosition.current;
-                const deltaX = (event.clientX - lastMousePosition.current.x) * panSensitivity;
-                const deltaY = (event.clientY - lastMousePosition.current.y) * panSensitivity;
-
-                camera.position.x -= deltaX;
-                camera.position.z -= deltaY;
-
-                controlsRef.current.target.x -= deltaX;
-                controlsRef.current.target.z -= deltaY;
-
-                camera.position.y = initialYPosition.current;
-                controlsRef.current.target.y = initialTargetYPosition.current;
-
-                lastMousePosition.current = { x: event.clientX, y: event.clientY };
-            }
+            if (!isDragging.current || !lastMousePosition.current) return;
+        
+            // Calculate movement delta (in pixels)
+            const deltaX = (event.clientX - lastMousePosition.current.x) * panSensitivity;
+            const deltaY = (event.clientY - lastMousePosition.current.y) * panSensitivity;
+        
+            // Get the camera's right and forward vectors
+            const right = new THREE.Vector3();
+            const forward = new THREE.Vector3();
+            
+            camera.getWorldDirection(forward); // Forward direction
+            forward.y = 0; // Ignore vertical movement
+            forward.normalize();
+        
+            right.crossVectors(camera.up, forward).normalize(); // Right direction
+        
+            // Adjust camera and target positions
+            camera.position.addScaledVector(right, deltaX);
+            camera.position.addScaledVector(forward, deltaY);
+        
+            controlsRef.current.target.addScaledVector(right, deltaX);
+            controlsRef.current.target.addScaledVector(forward, deltaY);
+        
+            // Keep the camera's Y position fixed
+            camera.position.y = initialYPosition.current;
+            controlsRef.current.target.y = initialTargetYPosition.current;
+        
+            lastMousePosition.current = { x: event.clientX, y: event.clientY };
         };
+        
 
         const handleMouseUp = () => {
             isDragging.current = false;
@@ -144,6 +158,19 @@ const OrbitControlsComponent: FC<OrbitControlsProps> = ({
             }
         };
     }, [camera, gl.domElement, minPolarAngle, maxPolarAngle]);
+
+    // Call this function to move the camera to a specific target position
+    // const updateCameraPosition = (targetX: number, targetZ: number) => {
+    //     const targetPosition = new THREE.Vector3(targetX, controlsRef.current.target.y, targetZ);
+    //     controlsRef.current.target.copy(targetPosition);
+    //     camera.position.set(targetX, camera.position.y, targetZ);
+    //     camera.lookAt(targetPosition);
+    // };
+
+    // // Triggered when the parent component calls this function
+    // useEffect(() => {
+    //     moveCameraToTarget && moveCameraToTarget(10, 10); // Example move
+    // }, [moveCameraToTarget]);
 
     return (
         <OrbitControls
