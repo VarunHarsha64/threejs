@@ -8,9 +8,7 @@ interface OrbitControlsProps {
     maxAzimuthAngle: number;
     minPolarAngle: number;
     maxPolarAngle: number;
-    target: THREE.Vector3;
-    targetPosition?: { x: number; y: number };
-}
+    target: THREE.Vector3;}
 
 const OrbitControlsComponent: FC<OrbitControlsProps> = ({
     minAzimuthAngle,
@@ -18,7 +16,6 @@ const OrbitControlsComponent: FC<OrbitControlsProps> = ({
     minPolarAngle,
     maxPolarAngle,
     target,
-    targetPosition,
 }) => {
     const controlsRef = useRef<any>(null);
     const { camera, gl } = useThree();
@@ -56,12 +53,6 @@ const OrbitControlsComponent: FC<OrbitControlsProps> = ({
 
         camera.updateProjectionMatrix();
     });
-
-    useEffect(() => {
-        if (targetPosition) {
-            currentTargetRef.current.set(camera.position.x, camera.position.y, 0);
-        }
-    }, [targetPosition]);
 
     useEffect(() => {
         const handleMouseDown = (event: MouseEvent) => {
