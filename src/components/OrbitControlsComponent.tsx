@@ -32,38 +32,38 @@ const OrbitControlsComponent: FC<OrbitControlsProps> = ({
     // const touchSensitivity = 0.05;
     const panSensitivity = 0.075;
 
-    const moveToTarget = (targetX: number, targetZ: number) => {
-        const currentPosition = camera.position;
+    // const moveToTarget = (targetX: number, targetZ: number) => {
+    //     const currentPosition = camera.position;
     
-        // Calculate deltas between the current position and target (x, z)
-        const deltaXWorld = targetX - currentPosition.x;
-        const deltaZWorld = targetZ - currentPosition.z;
+    //     // Calculate deltas between the current position and target (x, z)
+    //     const deltaXWorld = targetX - currentPosition.x;
+    //     const deltaZWorld = targetZ - currentPosition.z;
     
-        // Get the camera's right and forward vectors
-        const right = new THREE.Vector3();
-        const forward = new THREE.Vector3();
+    //     // Get the camera's right and forward vectors
+    //     const right = new THREE.Vector3();
+    //     const forward = new THREE.Vector3();
     
-        camera.getWorldDirection(forward); // Forward direction
-        forward.y = 0; // Ignore vertical movement
-        forward.normalize(); // Normalize the forward vector
+    //     camera.getWorldDirection(forward); // Forward direction
+    //     forward.y = 0; // Ignore vertical movement
+    //     forward.normalize(); // Normalize the forward vector
     
-        right.crossVectors(camera.up, forward).normalize(); // Right direction
+    //     right.crossVectors(camera.up, forward).normalize(); // Right direction
     
-        // Project the deltas onto the camera's right and forward directions
-        const deltaX = right.dot(new THREE.Vector3(deltaXWorld, 0, deltaZWorld)); // Movement along the right direction
-        const deltaY = forward.dot(new THREE.Vector3(deltaXWorld, 0, deltaZWorld)); // Movement along the forward direction
+    //     // Project the deltas onto the camera's right and forward directions
+    //     const deltaX = right.dot(new THREE.Vector3(deltaXWorld, 0, deltaZWorld)); // Movement along the right direction
+    //     const deltaY = forward.dot(new THREE.Vector3(deltaXWorld, 0, deltaZWorld)); // Movement along the forward direction
     
-        // Adjust camera and target positions based on delta
-        camera.position.addScaledVector(right, deltaX);
-        camera.position.addScaledVector(forward, deltaY);
+    //     // Adjust camera and target positions based on delta
+    //     camera.position.addScaledVector(right, deltaX);
+    //     camera.position.addScaledVector(forward, deltaY);
     
-        controlsRef.current.target.addScaledVector(right, deltaX);
-        controlsRef.current.target.addScaledVector(forward, deltaY);
+    //     controlsRef.current.target.addScaledVector(right, deltaX);
+    //     controlsRef.current.target.addScaledVector(forward, deltaY);
     
-        // Keep the camera's Y position fixed
-        camera.position.y = initialYPosition.current;
-        controlsRef.current.target.y = initialTargetYPosition.current;
-    };
+    //     // Keep the camera's Y position fixed
+    //     camera.position.y = initialYPosition.current;
+    //     controlsRef.current.target.y = initialTargetYPosition.current;
+    // };
 
     useFrame(() => {
         // console.log(camera.position.x - controlsRef.current.target.x, camera.position.z - controlsRef.current.target.z);
