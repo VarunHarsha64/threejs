@@ -30,7 +30,7 @@ const OrbitControlsComponent: FC<OrbitControlsProps> = ({
 
     const smoothingFactor = 2;
     // const touchSensitivity = 0.05;
-    const panSensitivity = 0.05;
+    const panSensitivity = 0.075;
 
     const moveToTarget = (targetX: number, targetZ: number) => {
         const currentPosition = camera.position;
@@ -64,19 +64,6 @@ const OrbitControlsComponent: FC<OrbitControlsProps> = ({
         camera.position.y = initialYPosition.current;
         controlsRef.current.target.y = initialTargetYPosition.current;
     };
-    
-
-    setInterval(()=>{
-        const handleMoveCamera = () => {
-            // Example target position
-            const targetX = 10;
-            const targetZ = 10;
-            
-            moveToTarget(targetX, targetZ);
-        };
-        console.log(10)
-        handleMoveCamera();
-    },10000)
 
     useFrame(() => {
         // console.log(camera.position.x - controlsRef.current.target.x, camera.position.z - controlsRef.current.target.z);
@@ -91,7 +78,7 @@ const OrbitControlsComponent: FC<OrbitControlsProps> = ({
 
         if (isWheelActive.current && !isDragging.current) {
             const polarAngle = controlsRef.current.getPolarAngle();
-            const idealZoom = 8 * Math.abs(Math.cos(polarAngle)) + 5;
+            const idealZoom = 20 * Math.abs(Math.cos(polarAngle)) + 40;
             camera.position.y += (idealZoom - camera.position.y) * smoothingFactor;
             console.log(idealZoom, camera.position.y);
         }

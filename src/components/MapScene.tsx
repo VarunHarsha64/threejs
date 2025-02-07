@@ -9,7 +9,7 @@ const MapScene: React.FC = () => {
   return (
     <div className="h-screen w-full">
       <Canvas>
-        <CameraComponent position={[0, 15, 0]} />
+        <CameraComponent position={[0, 60, 0]} />
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 10, 10]} intensity={1} />
         <MapModel />
